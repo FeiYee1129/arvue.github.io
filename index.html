@@ -12,18 +12,35 @@
         <a-scene embedded vr-mode-ui="enabled: false" arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
 
         <a-assets>
-            <a-asset-item id="animated-asset" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/lamb/Mesh_Sheep.gltf"></a-asset-item>
+            <a-asset-item id="sheep" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/lamb/Mesh_Sheep.gltf"></a-asset-item>
+            <a-asset-item id="barn" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/barn/Barn%20Open.gltf"></a-asset-item>
+            <a-asset-item id="tree" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/tree/BubingaTree.gltf"></a-asset-item>
         </a-assets>
-
-        <a-marker type='barcode' value='7'>
-            <a-box position='0 0.5 0' color="yellow"></a-box>
-        </a-marker>
-
+            
         <a-marker id="animated-marker" type='barcode' value='6'>
             <a-entity
                 animation-mixer
-                gltf-model="#animated-asset"
-                scale="0.005 0.008 0.008">
+                gltf-model="#sheep"
+                scale="0.08 0.08 0.08"
+                rotation="90 0 0">
+            </a-entity>
+        </a-marker>
+            
+        <a-marker id="animated-marker" type='barcode' value='7'>
+            <a-entity
+                animation-mixer
+                gltf-model="#barn"
+                scale="0.08 0.08 0.08"
+                rotation="90 0 0">
+            </a-entity>
+        </a-marker>
+        
+        <a-marker id="animated-marker" type='barcode' value='8'>
+            <a-entity
+                animation-mixer
+                gltf-model="#tree"
+                scale="0.08 0.08 0.08"
+                rotation="90 0 0">
             </a-entity>
         </a-marker>
 
