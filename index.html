@@ -13,34 +13,36 @@
 
         <a-assets>
             <a-asset-item id="sheep" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/lamb/Mesh_Sheep.gltf"></a-asset-item>
-            <a-asset-item id="barn" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/barn/Barn%20Open.gltf"></a-asset-item>
-            <a-asset-item id="tree" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/tree/BubingaTree.gltf"></a-asset-item>
+            <a-asset-item id="marigold" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/marigold/DesertMarigold.gltf"></a-asset-item>
+            <a-asset-item id="palm" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/palmtree/CoconutPalmTree.gltf"></a-asset-item>
         </a-assets>
             
         <a-marker id="animated-marker" type='barcode' value='6'>
             <a-entity
                 animation-mixer
                 gltf-model="#sheep"
-                scale="0.009 0.009 0.009"
+                scale="0.05 0.05 0.05"
                 rotation="270 0 0">
             </a-entity>
         </a-marker>
             
-        <a-marker id="animated-marker" type='barcode' value='8'>
+        <!-- <a-marker-camera preset="hiro">
             <a-entity
                 animation-mixer
-                gltf-model="#barn"
-                scale="0.0001 0.0001 0.0001"
-                rotation="0 0 0">
+                gltf-model="#marigold"
+                scale="0.5 0.5 0.5"
+                position="20 0 0"
+                rotation="270 0 0">
             </a-entity>
-        </a-marker>
+        </a-marker-camera> -->
         
         <a-marker id="animated-marker" type='barcode' value='7'>
             <a-entity
                 animation-mixer
-                gltf-model="#tree"
-                scale="0.01 0.01 0.01"
-                rotation="0 0 0">
+                gltf-model="#palm"
+                scale="0.8 0.8 0.8"
+                position="0 0 0"
+                rotation="270 0 0">
             </a-entity>
         </a-marker>
 
