@@ -1,52 +1,152 @@
 <!doctype HTML>
 <html>
+    <style>
+        video#arjs-video{
+            /* Make video to at least 100% wide and tall */
+            min-width: 50%;
+            min-height: 50%;
+            /* Setting width & height to auto prevents the browser from stretching or squishing the video */
+            width: auto;
+            height: auto;
+            /* Center the video */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(0, 0);
+        }
+    </style>
     <head>
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
     <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
     <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="html2canvas.js" ></script>
+    <script src="https://raw.githubusercontent.com/ilkkao/capture-video-frame/master/capture-video-frame.js"></script>
+    <script src="https://unpkg.com/merge-images"></script>
+    <script type="text/javascript" src="https://raw.githubusercontent.com/jhuckaby/webcamjs/master/webcam.min.js" ></script>
 
     <body style='margin : 0px; overflow: hidden;'>
         <!-- we add detectionMode and matrixCodeType to tell AR.js to recognize barcode markers -->
-        <a-scene embedded vr-mode-ui="enabled: false" arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
+        <div
+            id="ssarea"
+            style="
+            width: 640px;
+            height: 513px;">
+           <a-scene 
+            embedded 
+            vr-mode-ui="enabled: false" 
+            arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;">
 
-        <a-assets>
-            <a-asset-item id="sheep" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/lamb/Mesh_Sheep.gltf"></a-asset-item>
-            <a-asset-item id="marigold" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/marigold/DesertMarigold.gltf"></a-asset-item>
-            <a-asset-item id="palm" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/palmtree/CoconutPalmTree.gltf"></a-asset-item>
-        </a-assets>
+                <a-assets>
+                    <a-asset-item id="sheep" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/lamb/Mesh_Sheep.gltf"></a-asset-item>
+                    <a-asset-item id="marigold" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/marigold/DesertMarigold.gltf"></a-asset-item>
+                    <a-asset-item id="palm" src="https://raw.githubusercontent.com/FeiYee1129/arvue.github.io/master/palmtree/CoconutPalmTree.gltf"></a-asset-item>
+                </a-assets>
+                    
+                <a-marker id="animated-marker" type='barcode' value='6'>
+                    <a-entity
+                        animation-mixer
+                        gltf-model="#sheep"
+                        scale="0.05 0.05 0.05"
+                        rotation="270 0 0">
+                    </a-entity>
+                </a-marker>
+                    
+                <!-- <a-marker-camera preset="hiro">
+                    <a-entity
+                        animation-mixer
+                        gltf-model="#marigold"
+                        scale="0.5 0.5 0.5"
+                        position="20 0 0"
+                        rotation="270 0 0">
+                    </a-entity>
+                </a-marker-camera>-->
             
-        <a-marker id="animated-marker" type='barcode' value='6'>
-            <a-entity
-                animation-mixer
-                gltf-model="#sheep"
-                scale="0.05 0.05 0.05"
-                rotation="270 0 0">
-            </a-entity>
-        </a-marker>
-            
-        <!-- <a-marker-camera preset="hiro">
-            <a-entity
-                animation-mixer
-                gltf-model="#marigold"
-                scale="0.5 0.5 0.5"
-                position="20 0 0"
-                rotation="270 0 0">
-            </a-entity>
-        </a-marker-camera> -->
-        
-        <a-marker id="animated-marker" type='barcode' value='7'>
-            <a-entity
-                animation-mixer
-                gltf-model="#palm"
-                scale="0.8 0.8 0.8"
-                position="0 0 0"
-                rotation="270 0 0">
-            </a-entity>
-        </a-marker>
+                <a-marker id="animated-marker" type='barcode' value='7'>
+                    <a-entity
+                        animation-mixer
+                        gltf-model="#palm"
+                        scale="0.8 0.8 0.8"
+                        position="0 0 0"
+                        rotation="270 0 0">
+                    </a-entity>
+                </a-marker>
 
-        <a-entity camera></a-entity>
-        </a-scene>
+                <a-entity camera></a-entity>
+            </a-scene>--
+        </div>
+            <button
+                id="snap-button"
+                style="position:absolute;
+                transition: .5s ease;
+                top: 85%;
+                left: 42.5%;
+                background-color: white;
+                border-style: none;
+                font-size: 50px;"
+                >
+                <i class="fa fa-camera"></i>
+                <a id="download-link"></a>
+            </button>
     </body>
+<script>
+    function resizeCanvas(origCanvas, width, height) {
+        let resizedCanvas = document.createElement("canvas");
+        let resizedContext = resizedCanvas.getContext("2d");
+
+        resizedCanvas.height = height;
+        resizedCanvas.width = width;
+
+        resizedContext.drawImage(origCanvas, 0, 0, width, height);
+        return resizedCanvas.toDataURL();
+    }
+
+    document.getElementById("snap-button").addEventListener("click", function() {
+        let aScene = document.querySelector("a-scene").components.screenshot.getCanvas("perspective");
+        let frame = captureVideoFrame("video", "png");
+        aScene = resizeCanvas(aScene, frame.width, frame.height);
+        frame = frame.dataUri;
+        mergeImages([frame, aScene]).then(b64 => {
+            let link = document.getElementById("download-link", "png");
+            link.setAttribute("download", "AR.png");
+            link.setAttribute("href", b64);
+            link.click();
+        });
+    });
+    function captureVideoFrame(video, format, width, height) {
+        if (typeof video === 'string') {
+            video = document.querySelector(video);
+        }
+
+        format = format || 'jpeg';
+
+        if (!video || (format !== 'png' && format !== 'jpeg')) {
+            return false;
+        }
+
+        var canvas = document.createElement("CANVAS");
+
+        canvas.width = width || video.videoWidth;
+        canvas.height = height || video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        var dataUri = canvas.toDataURL('image/' + format);
+        var data = dataUri.split(',')[1];
+        var mimeType = dataUri.split(';')[0].slice(5)
+
+        var bytes = window.atob(data);
+        var buf = new ArrayBuffer(bytes.length);
+        var arr = new Uint8Array(buf);
+
+        for (var i = 0; i < bytes.length; i++) {
+            arr[i] = bytes.charCodeAt(i);
+        }
+
+        var blob = new Blob([ arr ], { type: mimeType });
+        return { blob: blob, dataUri: dataUri, format: format, width: canvas.width, height: canvas.height };
+    };
+</script>
 </html>
